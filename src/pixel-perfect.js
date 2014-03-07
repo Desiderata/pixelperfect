@@ -211,8 +211,8 @@ var pixelperfect = function ()
 
 		toggle: function (remember)
 		{
-			remember = remember || false;
-		
+			remember = remember != false;
+
 			classie.toggle(image, "activated");
 			if (!defaults.dat_gui)
 			{
