@@ -1,7 +1,7 @@
 /*!
- * Pixel Perfect jQuery Plugin 
+ * Pixel Perfect jQuery Plugin
  * Author: @stefanoortisi
- * 
+ *
  * Licensed under the MIT license
  */
 
@@ -123,22 +123,17 @@ var pixelperfect = function ()
 		gui.add(conf, 'preview').onChange(pixelperfect.toggle);
 		var element_dat = document.querySelectorAll(".dg.ac")[0];
 		classie.addClass(element_dat, defaults.prefix + "-dat");
-
 	}
 
 	function add_ui(callback)
 	{
-
 		if (typeof dat == "undefined")
 		{
 			add_button();
 		}
 
-
 		add_image(defaults.image, callback);
-
 		original_overflow = document.body.style.overflow;
-
 	}
 
 	function add_image(src, callback)
@@ -186,7 +181,6 @@ var pixelperfect = function ()
 
 		init: function (options)
 		{
-
 			this.toggle = __bind(this.toggle, this);
 			this.set_opacity = __bind(this.set_opacity, this);
 
@@ -239,5 +233,4 @@ var pixelperfect = function ()
 			image.style.opacity = value
 		}
 	};
-
 }();
