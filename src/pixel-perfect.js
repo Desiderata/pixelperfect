@@ -5,9 +5,63 @@
  * Licensed under the MIT license
  */
 
-(function(e){"use strict";function t(e){return new RegExp("(^|\\s+)"+e+"(\\s+|$)")}function s(e,t){var s=n(e,t)?i:r;s(e,t)}var n,r,i;if("classList"in document.documentElement){n=function(e,t){return e.classList.contains(t)};r=function(e,t){e.classList.add(t)};i=function(e,t){e.classList.remove(t)}}else{n=function(e,n){return t(n).test(e.className)};r=function(e,t){if(!n(e,t)){e.className=e.className+" "+t}};i=function(e,n){e.className=e.className.replace(t(n)," ")}}var o={hasClass:n,addClass:r,removeClass:i,toggleClass:s,has:n,add:r,remove:i,toggle:s};if(typeof define==="function"&&define.amd){define(o)}else{e.classie=o}})(window)
-__bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+(function (e) {
+	"use strict";
 
+	function t(e) {
+		return new RegExp("(^|\\s+)" + e + "(\\s+|$)")
+	}
+
+	function s(e, t) {
+		var s = n(e, t) ? i : r;
+		s(e, t)
+	}
+	var n, r, i;
+	if ("classList" in document.documentElement) {
+		n = function (e, t) {
+			return e.classList.contains(t)
+		};
+		r = function (e, t) {
+			e.classList.add(t)
+		};
+		i = function (e, t) {
+			e.classList.remove(t)
+		}
+	} else {
+		n = function (e, n) {
+			return t(n).test(e.className)
+		};
+		r = function (e, t) {
+			if (!n(e, t)) {
+				e.className = e.className + " " + t
+			}
+		};
+		i = function (e, n) {
+			e.className = e.className.replace(t(n), " ")
+		}
+	}
+	var o = {
+		hasClass: n,
+		addClass: r,
+		removeClass: i,
+		toggleClass: s,
+		has: n,
+		add: r,
+		remove: i,
+		toggle: s
+	};
+	if (typeof define === "function" && define.amd) {
+		define(o)
+	} else {
+		e.classie = o
+	}
+})(window);
+
+__bind = function (fn, me) {
+	return function () {
+		return fn.apply(me, arguments);
+	};
+};
 
 var pixelperfect = function() {
 
@@ -16,7 +70,8 @@ var pixelperfect = function() {
         dat_gui: true,
         visible: false,
         align: "center",
-        opacity: 0.8
+        opacity: 0.8,
+		remember: true
     };
 
     var image, toggle_button, original_overflow;
@@ -58,7 +113,7 @@ var pixelperfect = function() {
     }
 
     function add_image( src, callback ) {
-        var img = new Image()
+        var img = new Image();
         img.onload = function() {
             image = document.createElement( "img" );
             image.setAttribute( "class", defaults.prefix + "-image" );
@@ -71,7 +126,7 @@ var pixelperfect = function() {
             }
 
             callback();
-        }
+        };
 
         img.src = src;
     }
@@ -80,11 +135,6 @@ var pixelperfect = function() {
         toggle_button = document.createElement( "a" );
         toggle_button.setAttribute('class', defaults.prefix + '-btn');
         toggle_button.setAttribute('href', 'javascript:pixelperfect.toggle();');
-
-        var icon = document.createElement( "span" );
-        icon.innerHTML = "on/off";
-        icon.setAttribute('class', defaults.prefix + '-btn-span');
-        toggle_button.appendChild( icon );
 
         document.body.appendChild( toggle_button );
     }
@@ -113,33 +163,35 @@ var pixelperfect = function() {
                 create_gui();
             }
 
-            add_ui( function() { 
+            add_ui( function() {
                 pixelperfect.set_opacity( defaults.opacity );
+
+				if (defaults.remember && document.cookie.replace(/(?:(?:^|.*;\s*)pixelperfect\s*\=\s*([^;]*).*$)|^.*$/, "$1") == 'true')
+					classie.toggle( image, "activated");
             });
-            
         },
 
         toggle: function( ) {
-    
-            classie.toggle( image, "activated");
-            if( !defaults.dat_gui ){
-                classie.toggle( toggle_button, "activated");    
-            }
-            
+			classie.toggle( image, "activated");
+			if( !defaults.dat_gui ){
+				classie.toggle( toggle_button, "activated");
+			}
 
-            if( defaults.visible ) {
-                document.body.style.overflow = "hidden";
-            } else {
-                document.body.style.overflow = original_overflow;
-            }
+			if (defaults.remember) {
+				var pixelperfect = document.cookie.replace(/(?:(?:^|.*;\s*)pixelperfect\s*\=\s*([^;]*).*$)|^.*$/, "$1") == 'true';
+				document.cookie = 'pixelperfect=' + !pixelperfect;
+			}
 
+			if( defaults.visible ) {
+				document.body.style.overflow = "hidden";
+			} else {
+				document.body.style.overflow = original_overflow;
+			}
         },
 
         set_opacity: function( value ) {
             image.style.opacity = value
         }
-
-        
     };
 
 }();
